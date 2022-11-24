@@ -1,32 +1,34 @@
-import { Col, Card, Row } from "react-bootstrap";
-import scifiArray from "../Assets/scifi.json";
+import React from "react";
+import { Card, Col } from "react-bootstrap";
+import CommentArea from "./CommentArea";
 
-export default function SingleBook(book) {
-  return (
-    <Col>
-      <Row>
-        {scifiArray.slice(0, 12).map((book) => (
-          <Col md={2} sm={6} key={book.asin}>
-            <Card className="my-5">
-              <Card.Img
-                variant="top"
-                src={book.img}
-                className="imgTop card-image"
-                style={{
-                  height: "50vh",
-                  objectFit: "fill",
-                }}
-              />
-              <Card.Body>
-                <Card.Header className="text-truncate">
-                  {book.title}
-                </Card.Header>
-              </Card.Body>
-              <Card.Footer className="text-muted">${book.price}</Card.Footer>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-    </Col>
-  );
+class SingleBook extends React.Component {
+  state = {
+    selected: false,
+  };
+  render() {
+    return (
+      <Col>
+        <Card key={this.props.book.asin} style={{ width: "18rem" }}>
+          <Card.Img
+            onClick={() => {
+              this.setState({
+                selected: true,
+              });
+            }}
+            variant="top"
+            src={this.props.book.img}
+          />
+          <Card.Body>
+            <Card.Title>{this.props.book.title}</Card.Title>
+            {this.state.selected && (
+              <CommentArea asin={this.props.book.asin}></CommentArea>
+            )}
+          </Card.Body>
+        </Card>
+      </Col>
+    );
+  }
 }
+
+export default SingleBook;
